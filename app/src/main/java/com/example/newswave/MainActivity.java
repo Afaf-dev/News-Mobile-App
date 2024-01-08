@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.kwabenaberko.newsapilib.NewsApiClient;
@@ -17,12 +18,13 @@ import com.kwabenaberko.newsapilib.models.response.ArticleResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     RecyclerView recyclerView;
     List<Article> articleList = new ArrayList<>();
     NewsRecyclerViewAdapter adapter;
     LinearProgressIndicator progressIndicator;
+    Button btn1,btn2,btn3,btn4,btn5,btn6,btn7;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,8 +32,23 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.news_recycler_view);
         progressIndicator = findViewById(R.id.progress_bar);
 
+        Button btn1 = findViewById(R.id.btn_1);
+        Button btn2 = findViewById(R.id.btn_2);
+        Button btn3 = findViewById(R.id.btn_3);
+        Button btn4 = findViewById(R.id.btn_4);
+        Button btn5 = findViewById(R.id.btn_5);
+        Button btn6 = findViewById(R.id.btn_6);
+        Button btn7 = findViewById(R.id.btn_7);
+        btn1.setOnClickListener(this);
+        btn2.setOnClickListener(this);
+        btn3.setOnClickListener(this);
+        btn4.setOnClickListener(this);
+        btn5.setOnClickListener(this);
+        btn6.setOnClickListener(this);
+        btn7.setOnClickListener(this);
+
         setupRecyclerView();
-        GetNews();
+        GetNews("GENERAL");
     }
 
     void setupRecyclerView(){
@@ -49,12 +66,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    void GetNews(){
+    void GetNews(String category){
         changeInProgress(true);
         NewsApiClient newsApiClient = new NewsApiClient("9dbd30de9fad4f3aa0afc80ad4da2e42");
         newsApiClient.getTopHeadlines(
                 new TopHeadlinesRequest.Builder()
                         .language("en")
+                        .category(category)
                         .build(),
                 new NewsApiClient.ArticlesResponseCallback() {
                     @Override
@@ -75,4 +93,10 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
+    @Override
+    public void onClick(View v) {
+        Button btn = (Button) v;
+        String category = btn.getText().toString();
+        GetNews(category);
+    }
 }
