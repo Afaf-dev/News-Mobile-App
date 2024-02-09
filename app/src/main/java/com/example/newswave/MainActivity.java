@@ -1,6 +1,7 @@
 package com.example.newswave;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,6 +26,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     NewsRecyclerViewAdapter adapter;
     LinearProgressIndicator progressIndicator;
     Button btn1,btn2,btn3,btn4,btn5,btn6,btn7;
+    SearchView searchView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         recyclerView = findViewById(R.id.news_recycler_view);
         progressIndicator = findViewById(R.id.progress_bar);
 
+        searchView = findViewById(R.id.search_view);
         Button btn1 = findViewById(R.id.btn_1);
         Button btn2 = findViewById(R.id.btn_2);
         Button btn3 = findViewById(R.id.btn_3);
@@ -47,8 +51,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn6.setOnClickListener(this);
         btn7.setOnClickListener(this);
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                GetNews("GENERAL",query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
         setupRecyclerView();
-        GetNews("GENERAL");
+        GetNews("GENERAL",null);
     }
 
     void setupRecyclerView(){
@@ -66,13 +83,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    void GetNews(String category){
+    void GetNews(String category,String query){
         changeInProgress(true);
         NewsApiClient newsApiClient = new NewsApiClient("9dbd30de9fad4f3aa0afc80ad4da2e42");
         newsApiClient.getTopHeadlines(
                 new TopHeadlinesRequest.Builder()
                         .language("en")
                         .category(category)
+                        .q(query)
                         .build(),
                 new NewsApiClient.ArticlesResponseCallback() {
                     @Override
@@ -97,6 +115,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         Button btn = (Button) v;
         String category = btn.getText().toString();
-        GetNews(category);
+        GetNews(category,null);
     }
 }

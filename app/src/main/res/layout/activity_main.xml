@@ -29,6 +29,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+        <androidx.appcompat.widget.SearchView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:queryHint="Search News"
+            android:layout_gravity="center"
+            android:id="@+id/search_view"/>
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
