@@ -69,5 +69,4 @@ public class NewsRecyclerViewAdapter extends RecyclerView.Adapter<NewsRecyclerVi
             imageView = itemView.findViewById(R.id.article_image_view);
         }
     }
-    // ... (rest of the class code would go here)
 }
